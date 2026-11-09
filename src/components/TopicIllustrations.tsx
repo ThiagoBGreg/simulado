@@ -951,7 +951,7 @@ export const TopicIllustrationCard: React.FC<TopicIllustrationProps> = ({ questi
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
         <div className="p-3 rounded-xl bg-[#FAF0F2] border border-[#F3E3E7] text-xs text-[#4A4045] leading-relaxed">
-          <strong className="font-extrabold text-[#7A3E53]">💡 Dica de Ouro para a Raphaela: </strong>
+          <strong className="font-extrabold text-[#7A3E53]">💡 Dica de Ouro para a Raphaaa: </strong>
           {meta.keyTakeaway}
         </div>
         <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-200/80 text-xs text-[#4A4045] leading-relaxed">

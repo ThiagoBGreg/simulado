@@ -154,7 +154,7 @@ export const DashboardAndFilters: React.FC<DashboardAndFiltersProps> = ({
 
   return (
     <div className="space-y-8 pb-12">
-      {/* 1. HERO CARD — PAINEL DA RAPHAELA + PORCENTAGEM DE ESTUDO POR MATÉRIA */}
+      {/* 1. HERO CARD — PAINEL DA RAPHAAA + PORCENTAGEM DE ESTUDO POR MATÉRIA */}
       <section className="relative overflow-hidden rounded-3xl bg-[#FFFFFF] border border-[#F3E3E7] shadow-blush-md p-6 sm:p-8">
         <div
           className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full opacity-40 blur-3xl"
@@ -165,11 +165,11 @@ export const DashboardAndFilters: React.FC<DashboardAndFiltersProps> = ({
           <div className="max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF0F2] border border-[#F3E3E7] text-xs font-bold text-[#7A3E53]">
               <Sparkles className="w-3.5 h-3.5 text-[#8C4A5F]" />
-              <span>Painel da Raphaela • Preparação Intensiva ENEM (Exatas)</span>
+              <span>Painel da Raphaaa • Preparação Intensiva ENEM (Exatas)</span>
             </div>
 
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#7A3E53] tracking-tight leading-tight">
-              Bem-vinda de volta aos estudos, Raphaela!
+              Bem-vinda de volta aos estudos, Raphaaa!
             </h2>
 
             <p className="text-sm sm:text-base text-[#4A4045] leading-relaxed">
@@ -842,14 +842,14 @@ export const DashboardAndFilters: React.FC<DashboardAndFiltersProps> = ({
         </div>
       </section>
 
-      {/* 4. HISTÓRICO DE SIMULADOS DA RAPHAELA (se houver) */}
+      {/* 4. HISTÓRICO DE SIMULADOS DA RAPHAAA (se houver) */}
       {examHistory.length > 0 && (
         <section className="rounded-3xl bg-[#FFFFFF] border border-[#F3E3E7] shadow-blush-sm p-6 sm:p-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2.5">
               <Trophy className="w-5 h-5 text-[#7A3E53]" />
               <h3 className="text-base sm:text-lg font-extrabold text-[#7A3E53]">
-                Histórico de Simulados Concluídos da Raphaela
+                Histórico de Simulados Concluídos da Raphaaa
               </h3>
             </div>
             <button

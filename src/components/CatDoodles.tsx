@@ -65,7 +65,7 @@ export const CornerCatPeek: React.FC<DoodleProps> = ({ className = 'w-20 h-14' }
 );
 
 /**
- * Studying cat doodle with round glasses for Raphaela's header / dashboard
+ * Studying cat doodle with round glasses for Raphaaa's header / dashboard
  */
 export const StudyingCatDoodle: React.FC<DoodleProps> = ({ className = 'w-24 h-24' }) => (
   <svg
@@ -115,7 +115,7 @@ export const StudyingCatDoodle: React.FC<DoodleProps> = ({ className = 'w-24 h-2
  * Tela de Espera/Carregamento: Animação discreta de um gatinho descansando.
  */
 export const SleepingCatLoader: React.FC<{ message?: string; submessage?: string }> = ({
-  message = 'Preparando o ambiente de estudos da Raphaela...',
+  message = 'Preparando o ambiente de estudos da Raphaaa...',
   submessage = 'Organizando questões, fórmulas e cronômetro sem distrações',
 }) => (
   <div className="flex flex-col items-center justify-center py-14 px-6 text-center">
@@ -179,7 +179,7 @@ export const SleepingCatLoader: React.FC<{ message?: string; submessage?: string
 
 /**
  * Section 4.2 Feedback de Estado:
- * Conclusão de Simulado: Ilustração comemorativa estilizada ("Parabéns, Raphaela!").
+ * Conclusão de Simulado: Ilustração comemorativa estilizada ("Parabéns, Raphaaa!").
  */
 export const CelebrationCatIllustration: React.FC<DoodleProps> = ({ className = 'w-40 h-36' }) => (
   <svg
@@ -190,7 +190,7 @@ export const CelebrationCatIllustration: React.FC<DoodleProps> = ({ className = 
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
-    aria-label="Ilustração comemorativa Parabéns, Raphaela!"
+    aria-label="Ilustração comemorativa Parabéns, Raphaaa!"
   >
     {/* Sparkles & stars around */}
     <path d="M26 34 L29 26 L32 34 L40 37 L32 40 L29 48 L26 40 L18 37 Z" fill="#FAF0F2" stroke="#7A3E53" strokeWidth="1.5" />

@@ -30,7 +30,7 @@ const DEFAULT_FILTERS: FilterState = {
 export const App: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<AppStep>('dashboard');
   const [loadingMessage, setLoadingMessage] = useState<{ title: string; subtitle: string }>({
-    title: 'Preparando o caderno de prova da Raphaela...',
+    title: 'Preparando o caderno de prova da Raphaaa...',
     subtitle: 'Bloqueando gabarito e calibrando o cronômetro de simulação',
   });
 
@@ -214,7 +214,7 @@ export const App: React.FC = () => {
     setCountdownTargetSeconds(Math.round(selected.length * customMinutesPerQuestion * 60));
 
     setLoadingMessage({
-      title: 'Preparando o Modo Prova da Raphaela...',
+      title: 'Preparando o Modo Prova da Raphaaa...',
       subtitle: 'Ocultando gabarito, organizando enunciados e iniciando cronômetro',
     });
     setCurrentStep('loading-exam');
@@ -417,7 +417,7 @@ export const App: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8C4A5F]">
           <div className="flex items-center gap-2 font-semibold text-[#7A3E53]">
             <SoftPawIcon className="w-4 h-4" />
-            <span>Plataforma de Estudos e Simulado ENEM (Exatas) — Raphaela</span>
+            <span>Plataforma de Estudos e Simulado ENEM (Exatas) — Raphaaa</span>
           </div>
           <div className="text-center sm:text-right">
             Matemática, Física e Química (Edições 2021, 2022 e 2023) • Design System Blush &amp;

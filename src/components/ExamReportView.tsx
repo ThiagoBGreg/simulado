@@ -45,7 +45,7 @@ export const ExamReportView: React.FC<ExamReportViewProps> = ({
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     questions.forEach((q) => {
-      // Open all resolutions by default so Raphaela can immediately inspect or collapse them
+      // Open all resolutions by default so Raphaaa can immediately inspect or collapse them
       initial[q.id] = true;
     });
     return initial;
@@ -116,7 +116,7 @@ export const ExamReportView: React.FC<ExamReportViewProps> = ({
 
   return (
     <div className="space-y-8 pb-16">
-      {/* 1. CELEBRATION HEADER CARD — "Parabéns, Raphaela!" (Section 4.2) */}
+      {/* 1. CELEBRATION HEADER CARD — "Parabéns, Raphaaa!" (Section 4.2) */}
       <section className="relative overflow-hidden rounded-3xl bg-[#FFFFFF] border border-[#F3E3E7] shadow-blush-md p-6 sm:p-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
@@ -132,7 +132,7 @@ export const ExamReportView: React.FC<ExamReportViewProps> = ({
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#7A3E53] tracking-tight">
-                Parabéns, Raphaela!
+                Parabéns, Raphaaa!
               </h2>
 
               <p className="text-sm sm:text-base text-[#4A4045] leading-relaxed">

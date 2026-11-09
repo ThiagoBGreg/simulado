@@ -397,7 +397,7 @@ export const ActiveExamView: React.FC<ActiveExamViewProps> = ({
           </h3>
           <p className="text-sm text-[#8C4A5F] max-w-md mx-auto">
             O enunciado das questões está oculto enquanto o cronômetro está pausado para manter a
-            fidelidade da simulação da Raphaela.
+            fidelidade da simulação da Raphaaa.
           </p>
           <button
             type="button"
@@ -505,7 +505,7 @@ export const ActiveExamView: React.FC<ActiveExamViewProps> = ({
             </div>
 
             <p className="text-sm text-[#4A4045] leading-relaxed">
-              Raphaela, você respondeu <strong>{answeredCount}</strong> de{' '}
+              Raphaaa, você respondeu <strong>{answeredCount}</strong> de{' '}
               <strong>{totalQuestions}</strong> questões. Deseja submeter o simulado mesmo assim e
               desbloquear o gabarito comentado agora?
             </p>

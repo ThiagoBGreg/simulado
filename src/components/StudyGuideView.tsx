@@ -182,7 +182,7 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#7A3E53] tracking-tight">
-                Central de Estudos Ilustrada da Raphaela
+                Central de Estudos Ilustrada da Raphaaa
               </h2>
 
               <p className="text-sm sm:text-base text-[#4A4045] leading-relaxed">
@@ -272,7 +272,7 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
               📊 Porcentagem de Estudo por Matéria (Clique para filtrar ou marcar)
             </h3>
             <span className="text-xs text-[#8C4A5F]">
-              Progresso salvo automaticamente no navegador da Raphaela
+              Progresso salvo automaticamente no navegador da Raphaaa
             </span>
           </div>
 
@@ -686,7 +686,7 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
 
                       <div className="p-3.5 rounded-2xl bg-[#FAF0F2] border border-[#F3E3E7] text-xs text-[#4A4045] leading-relaxed">
                         <strong className="font-extrabold text-[#7A3E53]">
-                          💡 Dica de Ouro para a Raphaela:{' '}
+                          💡 Dica de Ouro para a Raphaaa:{' '}
                         </strong>
                         {meta.keyTakeaway}
                       </div>
@@ -936,7 +936,7 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
                           </div>
                         </div>
 
-                        {/* 4. BLOCO DE ANOTAÇÕES DE ESTUDO DA RAPHAELA + BOTÃO DE CONCLUIR */}
+                        {/* 4. BLOCO DE ANOTAÇÕES DE ESTUDO DA RAPHAAA + BOTÃO DE CONCLUIR */}
                         <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-[#F3E3E7]">
                           <button
                             type="button"
@@ -951,7 +951,7 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
                             <NotebookPen className="w-4 h-4 text-[#8C4A5F]" />
                             <span>
                               {userNote
-                                ? 'Ver/Editar Resumo Pessoal da Raphaela'
+                                ? 'Ver/Editar Resumo Pessoal da Raphaaa'
                                 : 'Adicionar Anotação Pessoal nesta Questão'}
                             </span>
                           </button>
@@ -986,7 +986,7 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
                         {(isNoteOpen || userNote.length > 0) && (
                           <div className="p-4 rounded-2xl bg-[#FAF0F2]/60 border border-[#F3E3E7] space-y-2">
                             <label className="block text-xs font-extrabold text-[#7A3E53]">
-                              📝 Anotações e Lembretes da Raphaela para esta questão:
+                              📝 Anotações e Lembretes da Raphaaa para esta questão:
                             </label>
                             <textarea
                               rows={2}

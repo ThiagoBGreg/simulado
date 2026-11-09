@@ -174,11 +174,11 @@ export const MATEMATICA_QUESTIONS: Question[] = [
     topic: 'Matemática Financeira',
     difficulty: 'Média',
     contextText:
-      'Raphaela planeja adquirir um notebook para seus estudos universitários cujo preço de tabela é R$ 4.000,00. A loja oferece duas modalidades de pagamento:\n• Modalidade I: pagamento à vista com 10% de desconto sobre o preço de tabela;\n• Modalidade II: entrada de R$ 1.800,00 no ato da compra e mais uma parcela única de R$ 2.100,00 após 30 dias.',
+      'Raphaaa planeja adquirir um notebook para seus estudos universitários cujo preço de tabela é R$ 4.000,00. A loja oferece duas modalidades de pagamento:\n• Modalidade I: pagamento à vista com 10% de desconto sobre o preço de tabela;\n• Modalidade II: entrada de R$ 1.800,00 no ato da compra e mais uma parcela única de R$ 2.100,00 após 30 dias.',
     supportData:
-      'Raphaela dispõe dos R$ 3.600,00 necessários para a compra à vista e pode aplicar qualquer saldo em um fundo de renda fixa que rende 2% ao mês.',
+      'Raphaaa dispõe dos R$ 3.600,00 necessários para a compra à vista e pode aplicar qualquer saldo em um fundo de renda fixa que rende 2% ao mês.',
     commandText:
-      'Caso opte pela Modalidade II e aplique o restante do dinheiro que usaria à vista no fundo de renda fixa durante esses 30 dias, em relação à Modalidade I, ao final dos 30 dias Raphaela terá:',
+      'Caso opte pela Modalidade II e aplique o restante do dinheiro que usaria à vista no fundo de renda fixa durante esses 30 dias, em relação à Modalidade I, ao final dos 30 dias Raphaaa terá:',
     alternatives: [
       { letter: 'A', text: 'vantagem financeira de R$ 36,00 na Modalidade I.' },
       { letter: 'B', text: 'vantagem financeira de R$ 264,00 na Modalidade I.' },
@@ -190,7 +190,7 @@ export const MATEMATICA_QUESTIONS: Question[] = [
     resolution: {
       numericalDemonstration: [
         '1. Valor à vista na Modalidade I: V_I = 4.000 × (1 - 0,10) = R$ 3.600,00. (Saldo restante após a compra = R$ 0,00).',
-        '2. Na Modalidade II, dos R$ 3.600,00 disponíveis, Raphaela paga R$ 1.800,00 de entrada e aplica o restante: C_aplicado = 3.600 - 1.800 = R$ 1.800,00.',
+        '2. Na Modalidade II, dos R$ 3.600,00 disponíveis, Raphaaa paga R$ 1.800,00 de entrada e aplica o restante: C_aplicado = 3.600 - 1.800 = R$ 1.800,00.',
         '3. Montante do valor aplicado após 30 dias (rendimento de 2%): M = 1.800 × 1,02 = R$ 1.836,00.',
         '4. Valor necessário para quitar a parcela de 30 dias na Modalidade II: R$ 2.100,00.',
         '5. Diferença desembolsada a mais na Modalidade II em 30 dias: 2.100,00 - 1.836,00 = R$ 264,00 a mais, logo a Modalidade I é mais vantajosa em R$ 264,00.',

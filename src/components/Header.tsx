@@ -41,7 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
               type="button"
               onClick={onReturnToDashboard}
               className="group flex items-center gap-3 text-left min-h-[48px] focus:outline-none"
-              title="Ir para o Painel da Raphaela"
+              title="Ir para o Painel da Raphaaa"
             >
               <div className="w-11 h-11 rounded-2xl bg-[#FAF0F2] border border-[#F3E3E7] flex items-center justify-center text-[#7A3E53] group-hover:bg-[#7A3E53] group-hover:text-white transition-all duration-200 shadow-sm">
                 <SoftPawIcon className="w-5 h-5 transition-transform duration-200 group-hover:scale-110 group-hover:rotate-6" />
@@ -52,7 +52,7 @@ export const Header: React.FC<HeaderProps> = ({
                     ENEM Exatas • 2021–2023
                   </span>
                   <span className="hidden md:inline-flex items-center gap-1 text-xs font-medium text-[#8C4A5F]">
-                    <Sparkles className="w-3.5 h-3.5" /> Espaço da Raphaela
+                    <Sparkles className="w-3.5 h-3.5" /> Espaço da Raphaaa
                   </span>
                 </div>
                 <h1 className="text-base sm:text-lg font-extrabold text-[#7A3E53] tracking-tight leading-snug mt-0.5">
