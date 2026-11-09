@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import {
   Atom,
+  BookMarked,
   BookOpen,
   Calculator,
   CheckCircle2,
@@ -11,22 +12,25 @@ import {
   Filter,
   FlaskConical,
   FunctionSquare,
+  Layers,
   Lightbulb,
   NotebookPen,
   Play,
   RotateCcw,
   Search,
   Sparkles,
+  AlertTriangle,
 } from 'lucide-react';
 import {
   Discipline,
+  DISCIPLINE_GREAT_AREA,
   DISCIPLINE_TOPICS,
   EnemYear,
   Question,
   Topic,
 } from '../types/enem';
 import { CornerCatPeek, SoftPawIcon, StudyingCatDoodle } from './CatDoodles';
-import { TopicIllustrationCard } from './TopicIllustrations';
+import { TOPIC_VISUALS, TopicIllustrationCard } from './TopicIllustrations';
 
 interface StudyGuideViewProps {
   allQuestions: Question[];
@@ -47,6 +51,7 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
   onUpdateStudyNote,
   onStartSimuladoFromFilter,
 }) => {
+  const [studyModeTab, setStudyModeTab] = useState<'questions' | 'chapters'>('questions');
   const [selectedDiscipline, setSelectedDiscipline] = useState<Discipline | 'Todas'>('Todas');
   const [selectedTopic, setSelectedTopic] = useState<Topic | 'Todos'>('Todos');
   const [selectedYear, setSelectedYear] = useState<EnemYear | 'Todos'>('Todos');
@@ -64,7 +69,6 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
       const total = qs.length;
       const percent = total > 0 ? Math.round((studiedCount / total) * 100) : 0;
 
-      // Also count completed topics (where all questions of that topic are studied)
       const topics = DISCIPLINE_TOPICS[disc];
       const completedTopics = topics.filter((top) => {
         const topicQs = qs.filter((q) => q.topic === top);
@@ -155,6 +159,12 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
     }
   };
 
+  const findTopicDiscipline = (topic: Topic): Discipline => {
+    if (DISCIPLINE_TOPICS['Matemática'].includes(topic)) return 'Matemática';
+    if (DISCIPLINE_TOPICS['Física'].includes(topic)) return 'Física';
+    return 'Química';
+  };
+
   return (
     <div className="space-y-8 pb-16">
       {/* 1. CABEÇALHO DO MODO ESTUDOS & PORCENTAGEM DE ESTUDO POR MATÉRIA */}
@@ -165,7 +175,7 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
               <StudyingCatDoodle className="w-24 h-24" />
             </div>
 
-            <div className="space-y-2.5 max-w-2xl">
+            <div className="space-y-3 max-w-2xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF0F2] border border-[#F3E3E7] text-xs font-bold text-[#7A3E53]">
                 <Sparkles className="w-3.5 h-3.5 text-[#8C4A5F]" />
                 <span>Caderno de Estudos Ilustrado • Todas as Questões e Resoluções</span>
@@ -178,10 +188,38 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
               <p className="text-sm sm:text-base text-[#4A4045] leading-relaxed">
                 Explore todas as <strong className="text-[#7A3E53]">{allQuestions.length} questões</strong> de{' '}
                 <strong className="text-[#7A3E53]">Matemática, Física e Química (2021–2023)</strong> com{' '}
-                <strong>esquemas visuais ilustrados</strong>, cálculo passo a passo, fórmulas e
-                raciocínio lógico. Marque cada questão conforme concluir a leitura para acompanhar sua{' '}
-                <strong>porcentagem de estudo em cada matéria</strong>!
+                <strong>esquemas visuais ilustrados</strong>, apostila teórica dos 22 tópicos,
+                cálculo passo a passo, fórmulas e raciocínio lógico.
               </p>
+
+              {/* Mode Switcher: Questões Resolvidas vs Apostila por Tópico */}
+              <div className="pt-1 flex flex-wrap justify-center sm:justify-start gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setStudyModeTab('questions')}
+                  className={`inline-flex items-center gap-2 px-4 py-2.5 min-h-[48px] rounded-2xl text-xs sm:text-sm font-extrabold border transition-all ${
+                    studyModeTab === 'questions'
+                      ? 'bg-[#7A3E53] text-white border-[#7A3E53] shadow-sm'
+                      : 'bg-[#FAF0F2] text-[#7A3E53] border-[#F3E3E7] hover:bg-[#F3E3E7]'
+                  }`}
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>Todas as Questões &amp; Resoluções Ilustradas ({allQuestions.length})</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setStudyModeTab('chapters')}
+                  className={`inline-flex items-center gap-2 px-4 py-2.5 min-h-[48px] rounded-2xl text-xs sm:text-sm font-extrabold border transition-all ${
+                    studyModeTab === 'chapters'
+                      ? 'bg-[#7A3E53] text-white border-[#7A3E53] shadow-sm'
+                      : 'bg-[#FAF0F2] text-[#7A3E53] border-[#F3E3E7] hover:bg-[#F3E3E7]'
+                  }`}
+                >
+                  <BookMarked className="w-4 h-4" />
+                  <span>Apostila Teórica &amp; Fórmulas por Tópico (22 Capítulos)</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -275,7 +313,6 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
                         </div>
                       </button>
 
-                      {/* Percentage Badge */}
                       <div className="text-right">
                         <span className="inline-flex items-center px-3 py-1 rounded-xl bg-[#7A3E53]/10 text-[#7A3E53] text-base font-extrabold">
                           {item.percent}%
@@ -283,7 +320,6 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
                       </div>
                     </div>
 
-                    {/* Progress bar */}
                     <div className="space-y-1.5">
                       <div className="flex justify-between text-xs font-bold">
                         <span className="text-[#4A4045]">
@@ -302,7 +338,6 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
                     </div>
                   </div>
 
-                  {/* Quick Actions on Discipline Card */}
                   <div className="flex items-center gap-2 pt-2 border-t border-[#F3E3E7]">
                     <button
                       type="button"
@@ -349,38 +384,44 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
           <div className="flex items-center gap-2.5">
             <Filter className="w-5 h-5 text-[#7A3E53]" />
             <h3 className="text-base sm:text-lg font-extrabold text-[#7A3E53]">
-              Filtrar Caderno de Estudos ({filteredStudyQuestions.length}{' '}
-              {filteredStudyQuestions.length === 1 ? 'questão' : 'questões'})
+              {studyModeTab === 'questions'
+                ? `Filtrar Questões e Resoluções (${filteredStudyQuestions.length})`
+                : `Filtrar Capítulos da Apostila (${availableTopics.length} tópicos)`}
             </h3>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                const next: Record<string, boolean> = {};
-                filteredStudyQuestions.forEach((q) => {
-                  next[q.id] = false;
-                });
-                setCollapsedCards(next);
-              }}
-              className="px-3.5 py-2 min-h-[44px] rounded-xl bg-[#FAF0F2] text-[#7A3E53] text-xs font-bold hover:bg-[#F3E3E7] transition-all"
-            >
-              Expandir Tudo
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                const next: Record<string, boolean> = {};
-                filteredStudyQuestions.forEach((q) => {
-                  next[q.id] = true;
-                });
-                setCollapsedCards(next);
-              }}
-              className="px-3.5 py-2 min-h-[44px] rounded-xl bg-[#FAF0F2] text-[#8C4A5F] text-xs font-bold hover:bg-[#F3E3E7] transition-all"
-            >
-              Modo Compacto
-            </button>
+            {studyModeTab === 'questions' && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next: Record<string, boolean> = {};
+                    filteredStudyQuestions.forEach((q) => {
+                      next[q.id] = false;
+                    });
+                    setCollapsedCards(next);
+                  }}
+                  className="px-3.5 py-2 min-h-[44px] rounded-xl bg-[#FAF0F2] text-[#7A3E53] text-xs font-bold hover:bg-[#F3E3E7] transition-all"
+                >
+                  Expandir Tudo
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next: Record<string, boolean> = {};
+                    filteredStudyQuestions.forEach((q) => {
+                      next[q.id] = true;
+                    });
+                    setCollapsedCards(next);
+                  }}
+                  className="px-3.5 py-2 min-h-[44px] rounded-xl bg-[#FAF0F2] text-[#8C4A5F] text-xs font-bold hover:bg-[#F3E3E7] transition-all"
+                >
+                  Modo Compacto
+                </button>
+              </>
+            )}
+
             {filteredStudyQuestions.length > 0 && (
               <button
                 type="button"
@@ -396,7 +437,6 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
 
         {/* Discipline, Year, Status, Search */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
-          {/* Discipline select */}
           <div className="lg:col-span-3">
             <label className="block text-[11px] font-bold uppercase text-[#8C4A5F] mb-1">
               Matéria
@@ -416,7 +456,6 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
             </select>
           </div>
 
-          {/* Year select */}
           <div className="lg:col-span-2">
             <label className="block text-[11px] font-bold uppercase text-[#8C4A5F] mb-1">
               Edição ENEM
@@ -437,7 +476,6 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
             </select>
           </div>
 
-          {/* Study status select */}
           <div className="lg:col-span-3">
             <label className="block text-[11px] font-bold uppercase text-[#8C4A5F] mb-1">
               Status de Estudo
@@ -455,7 +493,6 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
             </select>
           </div>
 
-          {/* Search box */}
           <div className="lg:col-span-4">
             <label className="block text-[11px] font-bold uppercase text-[#8C4A5F] mb-1">
               Buscar Conceito, Fórmula ou Palavra-Chave
@@ -558,273 +595,417 @@ export const StudyGuideView: React.FC<StudyGuideViewProps> = ({
         </div>
       </section>
 
-      {/* 3. LISTA COMPLETA DE ESTUDOS ILUSTRADOS E RESOLUÇÕES DETALHADAS */}
-      {filteredStudyQuestions.length === 0 ? (
-        <div className="rounded-3xl bg-white border border-[#F3E3E7] p-12 text-center space-y-3">
-          <p className="text-base font-extrabold text-[#7A3E53]">
-            Nenhuma questão encontrada para os filtros selecionados.
-          </p>
-          <p className="text-xs text-[#8C4A5F]">
-            Experimente exibir "Todas as Questões" ou limpar o campo de busca.
-          </p>
-        </div>
-      ) : (
+      {/* 3A. VISÃO POR CAPÍTULOS TEÓRICOS ILUSTRADOS (22 TÓPICOS) */}
+      {studyModeTab === 'chapters' && (
         <div className="space-y-6">
-          {filteredStudyQuestions.map((question, idx) => {
-            const isStudied = !!studiedMap[question.id];
-            const isCollapsed = !!collapsedCards[question.id];
-            const isNoteOpen = !!openNotesMap[question.id];
-            const userNote = studyNotes[question.id] || '';
+          {(selectedTopic === 'Todos' ? availableTopics : [selectedTopic]).map((topicName, idx) => {
+            const meta = TOPIC_VISUALS[topicName];
+            const disc = findTopicDiscipline(topicName);
+            const topicQuestions = allQuestions.filter((q) => q.topic === topicName);
+            const studiedInTopic = topicQuestions.filter((q) => !!studiedMap[q.id]).length;
+            const topicPct =
+              topicQuestions.length > 0
+                ? Math.round((studiedInTopic / topicQuestions.length) * 100)
+                : 0;
+            const allFormulas = topicQuestions.flatMap((q) =>
+              q.resolution.appliedFormulas.map((f) => ({
+                ...f,
+                year: q.year,
+                qNum: q.questionNumber,
+              }))
+            );
 
             return (
-              <article
-                key={question.id}
-                className={`rounded-3xl bg-[#FFFFFF] border transition-all shadow-blush-md overflow-hidden ${
-                  isStudied ? 'border-emerald-300/90' : 'border-[#F3E3E7]'
-                }`}
+              <section
+                key={topicName}
+                className="rounded-3xl bg-white border border-[#F3E3E7] shadow-blush-md overflow-hidden"
               >
-                {/* Card Top Header */}
-                <div
-                  className={`p-5 sm:p-6 border-b flex flex-wrap items-center justify-between gap-3 ${
-                    isStudied
-                      ? 'bg-emerald-50/40 border-emerald-200/70'
-                      : 'bg-[#FAF0F2]/50 border-[#F3E3E7]'
-                  }`}
-                >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-3 py-1 rounded-xl bg-[#7A3E53] text-white text-xs font-extrabold">
-                      Estudo #{idx + 1}
-                    </span>
-                    <span className="px-3 py-1 rounded-xl bg-white border border-[#F3E3E7] text-[#7A3E53] text-xs font-bold">
-                      ENEM {question.year} • Q.{question.questionNumber}
-                    </span>
-                    <span className="px-3 py-1 rounded-xl bg-white border border-[#F3E3E7] text-[#7A3E53] text-xs font-extrabold">
-                      {question.discipline} — {question.topic}
-                    </span>
-                    <span className="px-2.5 py-1 rounded-xl bg-[#FAF0F2] text-[#8C4A5F] text-xs font-bold">
-                      Nível: {question.difficulty}
-                    </span>
+                <div className="p-5 sm:p-6 bg-[#FAF0F2]/60 border-b border-[#F3E3E7] flex flex-wrap items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-3 py-1 rounded-xl bg-[#7A3E53] text-white text-xs font-extrabold">
+                        Capítulo {idx + 1} • {disc}
+                      </span>
+                      <span className="text-xs font-bold text-[#8C4A5F]">
+                        {DISCIPLINE_GREAT_AREA[disc]}
+                      </span>
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-extrabold text-[#7A3E53]">
+                      {topicName}
+                    </h3>
                   </div>
 
-                  {/* Interactive "Mark as Studied" Button + Collapse Toggle */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => onToggleStudied(question.id)}
-                      className={`group inline-flex items-center gap-2 px-4 py-2.5 min-h-[48px] rounded-2xl text-xs sm:text-sm font-extrabold border transition-all ${
-                        isStudied
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
-                          : 'bg-white text-[#7A3E53] border-[#7A3E53] hover:bg-[#7A3E53] hover:text-white'
-                      }`}
-                    >
-                      {isStudied ? (
-                        <>
-                          <CheckCircle2 className="w-4 h-4 shrink-0" />
-                          <span>Estudada ✓</span>
-                        </>
-                      ) : (
-                        <>
-                          <SoftPawIcon className="w-4 h-4 shrink-0 group-hover:rotate-12 transition-transform" />
-                          <span>Marcar como Estudada</span>
-                        </>
-                      )}
-                    </button>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <div className="text-xs font-bold text-[#8C4A5F]">
+                        Progresso no Tópico: {studiedInTopic}/{topicQuestions.length}
+                      </div>
+                      <div className="w-32 h-2.5 rounded-full bg-white border border-[#F3E3E7] overflow-hidden mt-1">
+                        <div
+                          className="h-full bg-[#7A3E53] rounded-full transition-all"
+                          style={{ width: `${topicPct}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    <span className="px-3 py-1.5 rounded-xl bg-[#7A3E53] text-white text-xs font-extrabold">
+                      {topicPct}%
+                    </span>
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setCollapsedCards((prev) => ({
-                          ...prev,
-                          [question.id]: !prev[question.id],
-                        }))
-                      }
-                      className="p-3 min-h-[48px] rounded-2xl bg-white border border-[#F3E3E7] text-[#7A3E53] hover:bg-[#FAF0F2] transition-colors"
-                      title={isCollapsed ? 'Expandir estudo completo' : 'Recolher estudo'}
+                      onClick={() => {
+                        setSelectedTopic(topicName);
+                        setStudyModeTab('questions');
+                        window.scrollTo({ top: 300, behavior: 'smooth' });
+                      }}
+                      className="px-4 py-2.5 min-h-[44px] rounded-xl bg-white border border-[#7A3E53] text-[#7A3E53] hover:bg-[#7A3E53] hover:text-white text-xs font-extrabold transition-all"
                     >
-                      {isCollapsed ? (
-                        <ChevronDown className="w-4 h-4" />
-                      ) : (
-                        <ChevronUp className="w-4 h-4" />
-                      )}
+                      Ver {topicQuestions.length} Questões Resolvidas →
                     </button>
                   </div>
                 </div>
 
-                {/* Card Body */}
-                {!isCollapsed && (
-                  <div className="p-5 sm:p-7 space-y-6">
-                    {/* 1. Enunciado e Alternativas com Gabarito Destacado */}
-                    <div className="space-y-4">
-                      <p className="text-sm sm:text-base text-[#4A4045] leading-relaxed whitespace-pre-line">
-                        {question.contextText}
-                      </p>
-
-                      {question.supportData && (
-                        <div className="p-4 rounded-2xl bg-[#FAF0F2]/75 border border-[#F3E3E7] text-xs sm:text-sm text-[#4A4045] whitespace-pre-line">
-                          {question.supportData}
-                        </div>
-                      )}
-
-                      <p className="text-sm sm:text-base font-bold text-[#7A3E53]">
-                        {question.commandText}
-                      </p>
-
-                      <div className="grid grid-cols-1 gap-2.5 pt-1">
-                        {question.alternatives.map((alt) => {
-                          const isCorrect = alt.letter === question.correctAnswer;
-                          return (
-                            <div
-                              key={alt.letter}
-                              className={`flex items-center gap-3.5 p-3.5 rounded-2xl border text-sm ${
-                                isCorrect
-                                  ? 'bg-emerald-50/75 border-emerald-300 text-emerald-950 font-bold shadow-sm'
-                                  : 'bg-white border-[#F3E3E7] text-[#4A4045]'
-                              }`}
-                            >
-                              <span
-                                className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-extrabold shrink-0 ${
-                                  isCorrect
-                                    ? 'bg-emerald-600 text-white'
-                                    : 'bg-[#FAF0F2] text-[#7A3E53]'
-                                }`}
-                              >
-                                {alt.letter}
-                              </span>
-                              <span className="flex-1">{alt.text}</span>
-                              {isCorrect && (
-                                <span className="px-3 py-1 rounded-full bg-white border border-emerald-300 text-emerald-700 text-xs font-extrabold shrink-0">
-                                  ✓ Gabarito Oficial ({alt.letter})
-                                </span>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
+                <div className="p-5 sm:p-7 space-y-6">
+                  {/* Diagram + Theory Summary */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div className="lg:col-span-6 rounded-2xl bg-[#FAF0F2]/40 border border-[#F3E3E7] p-3">
+                      {meta.renderSvg()}
+                      <p className="text-xs text-[#8C4A5F] mt-2 text-center">{meta.caption}</p>
                     </div>
 
-                    {/* 2. ILUSTRAÇÃO DIDÁTICA E ESQUEMA VISUAL DO TÓPICO */}
-                    <TopicIllustrationCard question={question} />
-
-                    {/* 3. RESOLUÇÃO COMPLETA EM 3 BLOCOS (Cálculo, Fórmulas e Raciocínio Lógico) */}
-                    <div className="rounded-2xl bg-[#FAF0F2]/55 border border-[#F3E3E7] p-5 sm:p-6 space-y-6">
-                      {/* Bloco 3.1: Demonstração Numérica / Cálculo */}
-                      <div className="space-y-3">
-                        <h4 className="flex items-center gap-2 text-sm font-extrabold text-[#7A3E53] uppercase tracking-wider">
-                          <Calculator className="w-4 h-4 text-[#8C4A5F]" />
-                          <span>1. Demonstração Numérica / Cálculo Passo a Passo</span>
+                    <div className="lg:col-span-6 space-y-4">
+                      <div className="p-4 rounded-2xl bg-[#FAF0F2]/60 border border-[#F3E3E7] space-y-1.5">
+                        <h4 className="text-xs font-extrabold uppercase tracking-wider text-[#7A3E53]">
+                          📚 Síntese Teórica para o ENEM
                         </h4>
-                        <div className="space-y-2">
-                          {question.resolution.numericalDemonstration.map((step, i) => (
-                            <div
-                              key={i}
-                              className="p-3.5 rounded-xl bg-white border border-[#F3E3E7] text-xs sm:text-sm text-[#4A4045] leading-relaxed font-medium"
-                            >
-                              {step}
-                            </div>
-                          ))}
-                        </div>
+                        <p className="text-xs sm:text-sm text-[#4A4045] leading-relaxed">
+                          {meta.theorySummary}
+                        </p>
                       </div>
 
-                      {/* Bloco 3.2: Fórmulas Aplicadas */}
-                      <div className="space-y-3">
-                        <h4 className="flex items-center gap-2 text-sm font-extrabold text-[#7A3E53] uppercase tracking-wider">
-                          <FunctionSquare className="w-4 h-4 text-[#8C4A5F]" />
-                          <span>2. Fórmulas Aplicadas &amp; Significado Físico/Matemático</span>
-                        </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {question.resolution.appliedFormulas.map((item, i) => (
-                            <div
-                              key={i}
-                              className="p-4 rounded-2xl bg-white border-l-4 border-l-[#7A3E53] border border-[#F3E3E7] shadow-sm space-y-1.5"
-                            >
-                              <div className="font-mono text-sm sm:text-base font-bold text-[#7A3E53] bg-[#FAF0F2] px-3 py-1.5 rounded-xl inline-block">
-                                {item.formula}
-                              </div>
-                              <p className="text-xs text-[#8C4A5F] leading-relaxed">
-                                {item.description}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
+                      <div className="p-3.5 rounded-2xl bg-[#FAF0F2] border border-[#F3E3E7] text-xs text-[#4A4045] leading-relaxed">
+                        <strong className="font-extrabold text-[#7A3E53]">
+                          💡 Dica de Ouro para a Raphaela:{' '}
+                        </strong>
+                        {meta.keyTakeaway}
                       </div>
 
-                      {/* Bloco 3.3: Raciocínio Lógico */}
-                      <div className="space-y-2.5">
-                        <h4 className="flex items-center gap-2 text-sm font-extrabold text-[#7A3E53] uppercase tracking-wider">
-                          <Lightbulb className="w-4 h-4 text-[#8C4A5F]" />
-                          <span>3. Raciocínio Lógico &amp; Análise de Distratores</span>
-                        </h4>
-                        <div className="p-4 rounded-2xl bg-white border border-[#F3E3E7] text-xs sm:text-sm text-[#4A4045] leading-relaxed">
-                          {question.resolution.logicalReasoning}
-                        </div>
+                      <div className="p-3.5 rounded-2xl bg-amber-50/75 border border-amber-200 text-xs text-[#4A4045] leading-relaxed">
+                        <strong className="font-extrabold text-amber-900">
+                          ⚠️ Pegadinha Clássica do Exame:{' '}
+                        </strong>
+                        {meta.commonTrap}
                       </div>
                     </div>
-
-                    {/* 4. BLOCO DE ANOTAÇÕES DE ESTUDO DA RAPHAELA + BOTÃO DE CONCLUIR */}
-                    <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-[#F3E3E7]">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setOpenNotesMap((prev) => ({
-                            ...prev,
-                            [question.id]: !prev[question.id],
-                          }))
-                        }
-                        className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[48px] rounded-xl bg-[#FAF0F2] text-[#7A3E53] text-xs font-bold hover:bg-[#F3E3E7] transition-all self-start"
-                      >
-                        <NotebookPen className="w-4 h-4 text-[#8C4A5F]" />
-                        <span>
-                          {userNote
-                            ? 'Ver/Editar Resumo Pessoal da Raphaela'
-                            : 'Adicionar Anotação Pessoal nesta Questão'}
-                        </span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => onToggleStudied(question.id)}
-                        className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 min-h-[48px] rounded-xl text-xs font-extrabold transition-all ${
-                          isStudied
-                            ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
-                            : 'bg-[#7A3E53] text-white hover:bg-[#8C4A5F]'
-                        }`}
-                      >
-                        {isStudied ? (
-                          <>
-                            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                            <span>Questão Registrada no Progresso de {question.discipline}</span>
-                          </>
-                        ) : (
-                          <>
-                            <Circle className="w-4 h-4" />
-                            <span>Concluir Estudo desta Questão (+1 em {question.discipline})</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-
-                    {(isNoteOpen || userNote.length > 0) && (
-                      <div className="p-4 rounded-2xl bg-[#FAF0F2]/60 border border-[#F3E3E7] space-y-2">
-                        <label className="block text-xs font-extrabold text-[#7A3E53]">
-                          📝 Anotações e Lembretes da Raphaela para esta questão:
-                        </label>
-                        <textarea
-                          rows={2}
-                          value={userNote}
-                          onChange={(e) => onUpdateStudyNote(question.id, e.target.value)}
-                          placeholder="Escreva aqui seu lembrete de fórmula, pegadinha ou dúvida para revisar depois..."
-                          className="w-full p-3 rounded-xl bg-white border border-[#F3E3E7] text-xs sm:text-sm text-[#4A4045] focus:outline-none focus:border-[#7A3E53]"
-                        />
-                      </div>
-                    )}
                   </div>
-                )}
-              </article>
+
+                  {/* Consolidated Formulas of this Topic */}
+                  <div className="space-y-3 pt-2 border-t border-[#F3E3E7]">
+                    <h4 className="text-xs font-extrabold uppercase tracking-wider text-[#7A3E53] flex items-center gap-1.5">
+                      <FunctionSquare className="w-4 h-4 text-[#8C4A5F]" />
+                      <span>Quadro de Fórmulas e Relações Essenciais de {topicName}</span>
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {allFormulas.map((f, i) => (
+                        <div
+                          key={i}
+                          className="p-3.5 rounded-2xl bg-[#FAF0F2]/50 border border-[#F3E3E7] space-y-1"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-mono text-xs sm:text-sm font-extrabold text-[#7A3E53] bg-white px-2.5 py-1 rounded-lg border border-[#F3E3E7]">
+                              {f.formula}
+                            </span>
+                            <span className="text-[10px] font-bold text-[#8C4A5F]">
+                              ENEM {f.year}
+                            </span>
+                          </div>
+                          <p className="text-xs text-[#4A4045] pt-1">{f.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
             );
           })}
         </div>
       )}
+
+      {/* 3B. LISTA COMPLETA DE ESTUDOS ILUSTRADOS E RESOLUÇÕES DETALHADAS POR QUESTÃO */}
+      {studyModeTab === 'questions' && (
+        <>
+          {filteredStudyQuestions.length === 0 ? (
+            <div className="rounded-3xl bg-white border border-[#F3E3E7] p-12 text-center space-y-3">
+              <p className="text-base font-extrabold text-[#7A3E53]">
+                Nenhuma questão encontrada para os filtros selecionados.
+              </p>
+              <p className="text-xs text-[#8C4A5F]">
+                Experimente exibir "Todas as Questões" ou limpar o campo de busca.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {filteredStudyQuestions.map((question, idx) => {
+                const isStudied = !!studiedMap[question.id];
+                const isCollapsed = !!collapsedCards[question.id];
+                const isNoteOpen = !!openNotesMap[question.id];
+                const userNote = studyNotes[question.id] || '';
+
+                return (
+                  <article
+                    key={question.id}
+                    className={`rounded-3xl bg-[#FFFFFF] border transition-all shadow-blush-md overflow-hidden ${
+                      isStudied ? 'border-emerald-300/90' : 'border-[#F3E3E7]'
+                    }`}
+                  >
+                    {/* Card Top Header */}
+                    <div
+                      className={`p-5 sm:p-6 border-b flex flex-wrap items-center justify-between gap-3 ${
+                        isStudied
+                          ? 'bg-emerald-50/40 border-emerald-200/70'
+                          : 'bg-[#FAF0F2]/50 border-[#F3E3E7]'
+                      }`}
+                    >
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="px-3 py-1 rounded-xl bg-[#7A3E53] text-white text-xs font-extrabold">
+                          Estudo #{idx + 1}
+                        </span>
+                        <span className="px-3 py-1 rounded-xl bg-white border border-[#F3E3E7] text-[#7A3E53] text-xs font-bold">
+                          ENEM {question.year} • Q.{question.questionNumber}
+                        </span>
+                        <span className="px-3 py-1 rounded-xl bg-white border border-[#F3E3E7] text-[#7A3E53] text-xs font-extrabold">
+                          {question.discipline} — {question.topic}
+                        </span>
+                        <span className="px-2.5 py-1 rounded-xl bg-[#FAF0F2] text-[#8C4A5F] text-xs font-bold">
+                          Nível: {question.difficulty}
+                        </span>
+                      </div>
+
+                      {/* Interactive "Mark as Studied" Button + Collapse Toggle */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => onToggleStudied(question.id)}
+                          className={`group inline-flex items-center gap-2 px-4 py-2.5 min-h-[48px] rounded-2xl text-xs sm:text-sm font-extrabold border transition-all ${
+                            isStudied
+                              ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+                              : 'bg-white text-[#7A3E53] border-[#7A3E53] hover:bg-[#7A3E53] hover:text-white'
+                          }`}
+                        >
+                          {isStudied ? (
+                            <>
+                              <CheckCircle2 className="w-4 h-4 shrink-0" />
+                              <span>Estudada ✓</span>
+                            </>
+                          ) : (
+                            <>
+                              <SoftPawIcon className="w-4 h-4 shrink-0 group-hover:rotate-12 transition-transform" />
+                              <span>Marcar como Estudada</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setCollapsedCards((prev) => ({
+                              ...prev,
+                              [question.id]: !prev[question.id],
+                            }))
+                          }
+                          className="p-3 min-h-[48px] rounded-2xl bg-white border border-[#F3E3E7] text-[#7A3E53] hover:bg-[#FAF0F2] transition-colors"
+                          title={isCollapsed ? 'Expandir estudo completo' : 'Recolher estudo'}
+                        >
+                          {isCollapsed ? (
+                            <ChevronDown className="w-4 h-4" />
+                          ) : (
+                            <ChevronUp className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Card Body */}
+                    {!isCollapsed && (
+                      <div className="p-5 sm:p-7 space-y-6">
+                        {/* 1. Enunciado e Alternativas com Gabarito Destacado */}
+                        <div className="space-y-4">
+                          <p className="text-sm sm:text-base text-[#4A4045] leading-relaxed whitespace-pre-line">
+                            {question.contextText}
+                          </p>
+
+                          {question.supportData && (
+                            <div className="p-4 rounded-2xl bg-[#FAF0F2]/75 border border-[#F3E3E7] text-xs sm:text-sm text-[#4A4045] whitespace-pre-line">
+                              {question.supportData}
+                            </div>
+                          )}
+
+                          <p className="text-sm sm:text-base font-bold text-[#7A3E53]">
+                            {question.commandText}
+                          </p>
+
+                          <div className="grid grid-cols-1 gap-2.5 pt-1">
+                            {question.alternatives.map((alt) => {
+                              const isCorrect = alt.letter === question.correctAnswer;
+                              return (
+                                <div
+                                  key={alt.letter}
+                                  className={`flex items-center gap-3.5 p-3.5 rounded-2xl border text-sm ${
+                                    isCorrect
+                                      ? 'bg-emerald-50/75 border-emerald-300 text-emerald-950 font-bold shadow-sm'
+                                      : 'bg-white border-[#F3E3E7] text-[#4A4045]'
+                                  }`}
+                                >
+                                  <span
+                                    className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-extrabold shrink-0 ${
+                                      isCorrect
+                                        ? 'bg-emerald-600 text-white'
+                                        : 'bg-[#FAF0F2] text-[#7A3E53]'
+                                    }`}
+                                  >
+                                    {alt.letter}
+                                  </span>
+                                  <span className="flex-1">{alt.text}</span>
+                                  {isCorrect && (
+                                    <span className="px-3 py-1 rounded-full bg-white border border-emerald-300 text-emerald-700 text-xs font-extrabold shrink-0">
+                                      ✓ Gabarito Oficial ({alt.letter})
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* 2. ILUSTRAÇÃO DIDÁTICA E ESQUEMA VISUAL DO TÓPICO + MAPA MENTAL */}
+                        <TopicIllustrationCard question={question} />
+
+                        {/* 3. RESOLUÇÃO COMPLETA EM 3 BLOCOS (Cálculo, Fórmulas e Raciocínio Lógico) */}
+                        <div className="rounded-2xl bg-[#FAF0F2]/55 border border-[#F3E3E7] p-5 sm:p-6 space-y-6">
+                          {/* Bloco 3.1: Demonstração Numérica / Cálculo */}
+                          <div className="space-y-3">
+                            <h4 className="flex items-center gap-2 text-sm font-extrabold text-[#7A3E53] uppercase tracking-wider">
+                              <Calculator className="w-4 h-4 text-[#8C4A5F]" />
+                              <span>1. Demonstração Numérica / Cálculo Passo a Passo</span>
+                            </h4>
+                            <div className="space-y-2">
+                              {question.resolution.numericalDemonstration.map((step, i) => (
+                                <div
+                                  key={i}
+                                  className="p-3.5 rounded-xl bg-white border border-[#F3E3E7] text-xs sm:text-sm text-[#4A4045] leading-relaxed font-medium"
+                                >
+                                  {step}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Bloco 3.2: Fórmulas Aplicadas */}
+                          <div className="space-y-3">
+                            <h4 className="flex items-center gap-2 text-sm font-extrabold text-[#7A3E53] uppercase tracking-wider">
+                              <FunctionSquare className="w-4 h-4 text-[#8C4A5F]" />
+                              <span>2. Fórmulas Aplicadas &amp; Significado Físico/Matemático</span>
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              {question.resolution.appliedFormulas.map((item, i) => (
+                                <div
+                                  key={i}
+                                  className="p-4 rounded-2xl bg-white border-l-4 border-l-[#7A3E53] border border-[#F3E3E7] shadow-sm space-y-1.5"
+                                >
+                                  <div className="font-mono text-sm sm:text-base font-bold text-[#7A3E53] bg-[#FAF0F2] px-3 py-1.5 rounded-xl inline-block">
+                                    {item.formula}
+                                  </div>
+                                  <p className="text-xs text-[#8C4A5F] leading-relaxed">
+                                    {item.description}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Bloco 3.3: Raciocínio Lógico */}
+                          <div className="space-y-2.5">
+                            <h4 className="flex items-center gap-2 text-sm font-extrabold text-[#7A3E53] uppercase tracking-wider">
+                              <Lightbulb className="w-4 h-4 text-[#8C4A5F]" />
+                              <span>3. Raciocínio Lógico &amp; Análise de Distratores</span>
+                            </h4>
+                            <div className="p-4 rounded-2xl bg-white border border-[#F3E3E7] text-xs sm:text-sm text-[#4A4045] leading-relaxed">
+                              {question.resolution.logicalReasoning}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 4. BLOCO DE ANOTAÇÕES DE ESTUDO DA RAPHAELA + BOTÃO DE CONCLUIR */}
+                        <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-[#F3E3E7]">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setOpenNotesMap((prev) => ({
+                                ...prev,
+                                [question.id]: !prev[question.id],
+                              }))
+                            }
+                            className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[48px] rounded-xl bg-[#FAF0F2] text-[#7A3E53] text-xs font-bold hover:bg-[#F3E3E7] transition-all self-start"
+                          >
+                            <NotebookPen className="w-4 h-4 text-[#8C4A5F]" />
+                            <span>
+                              {userNote
+                                ? 'Ver/Editar Resumo Pessoal da Raphaela'
+                                : 'Adicionar Anotação Pessoal nesta Questão'}
+                            </span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => onToggleStudied(question.id)}
+                            className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 min-h-[48px] rounded-xl text-xs font-extrabold transition-all ${
+                              isStudied
+                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
+                                : 'bg-[#7A3E53] text-white hover:bg-[#8C4A5F]'
+                            }`}
+                          >
+                            {isStudied ? (
+                              <>
+                                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                                <span>
+                                  Questão Registrada no Progresso de {question.discipline}
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <Circle className="w-4 h-4" />
+                                <span>
+                                  Concluir Estudo desta Questão (+1 em {question.discipline})
+                                </span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+
+                        {(isNoteOpen || userNote.length > 0) && (
+                          <div className="p-4 rounded-2xl bg-[#FAF0F2]/60 border border-[#F3E3E7] space-y-2">
+                            <label className="block text-xs font-extrabold text-[#7A3E53]">
+                              📝 Anotações e Lembretes da Raphaela para esta questão:
+                            </label>
+                            <textarea
+                              rows={2}
+                              value={userNote}
+                              onChange={(e) => onUpdateStudyNote(question.id, e.target.value)}
+                              placeholder="Escreva aqui seu lembrete de fórmula, pegadinha ou dúvida para revisar depois..."
+                              className="w-full p-3 rounded-xl bg-white border border-[#F3E3E7] text-xs sm:text-sm text-[#4A4045] focus:outline-none focus:border-[#7A3E53]"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };
-
